@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Privacy Policy — Flow Now</title>
+  <meta name="description" content="Flow Now shows public river data published by the U.S. Geological Survey. No accounts, no analytics, no advertising, and no third-party code of any kind." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="drop" viewBox="0 0 24 24">
+      <path d="M12 4.2C12 4.2 17.6 10.6 17.6 14.6A5.6 5.6 0 1 1 6.4 14.6C6.4 10.6 12 4.2 12 4.2Z"
+            fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+      <polyline points="8.1,15 10.2,15 11.3,12.7 12.7,17.4 13.8,15 16,15"
+            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="appstore-logo" viewBox="0 0 24 24">
+      <path d="M16.365 1.43c0 1.14-.42 2.2-1.12 2.98-.85.94-2.24 1.66-3.4 1.57-.14-1.1.44-2.28 1.1-3.02.79-.87 2.2-1.53 3.42-1.53zM20.9 17.4c-.55 1.27-.82 1.84-1.53 2.96-.99 1.56-2.39 3.5-4.12 3.51-1.54.02-1.94-1-4.03-.99-2.09.01-2.53 1.01-4.07.98-1.73-.03-3.05-1.78-4.04-3.34C1.34 16.65.99 11.06 3.31 8.09 4.72 6.26 6.86 5.16 8.9 5.16c2.07 0 3.37 1.13 5.08 1.13 1.66 0 2.67-1.13 5.06-1.13 1.81 0 3.73.99 5.1 2.7-4.48 2.45-3.75 8.84 1.76 9.54z"/>
+    </symbol>
+  </svg>
+
+  <header class="topbar wrap">
+    <a class="wordmark" href="index.html" aria-label="Glance Works — home">
+      <svg class="wordmark__mark" aria-hidden="true"><use href="#drop"/></svg>
+      <span>glance<b>works</b></span>
+    </a>
+    <a class="appstore" href="#" aria-label="Get it on the App Store">
+      <svg class="appstore__logo" aria-hidden="true"><use href="#appstore-logo"/></svg>
+      <span class="appstore__text"><small>Download on the</small><strong>App Store</strong></span>
+    </a>
+  </header>
+
+  <main class="prose wrap">
+    <h1>Privacy Policy</h1>
+    <p class="prose__meta"><strong>Flow Now</strong> · Last updated 15 July 2026</p>
+
+    <p class="prose__lede">
+      Flow Now shows public river data published by the U.S. Geological Survey. It has
+      no accounts, no analytics, no advertising, and no third-party code of any kind.
+    </p>
+
+    <h2>The short version</h2>
+    <p>
+      The developer collects nothing about you. There is no Flow Now server — nothing
+      you do in the app is sent to us, because there is nowhere for it to go.
+    </p>
+
+    <h2>Location</h2>
+    <p>If you allow it, Flow Now uses your location to list river gauges near you.</p>
+    <ul>
+      <li>Your location is used <strong>on your device</strong> to sort and filter gauges by distance.</li>
+      <li>Before any request leaves your device, your position is rounded to a grid roughly
+          9&nbsp;km (6&nbsp;miles) across. The area sent to the USGS is built from that rounded
+          point, never from your actual position.</li>
+      <li>Your precise location is <strong>never transmitted anywhere</strong>.</li>
+      <li>Your location is not stored, other than as that rounded grid point, used as the key
+          for a local list of nearby gauges so the app doesn't re-fetch it constantly.</li>
+      <li>Declining is fine. The app works without location — you search for gauges by river
+          name, town or zip code instead.</li>
+    </ul>
+
+    <h2>Searching</h2>
+    <ul>
+      <li>Searching by <strong>river name</strong> sends that text to the USGS to look up
+          matching gauges.</li>
+      <li>Searching by <strong>town or zip code</strong> sends that text to Apple's geocoding
+          service, which turns it into a coordinate. Apple's handling of that request is
+          covered by <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple's Privacy Policy</a>.</li>
+      <li>Your searches are not recorded or retained by the app.</li>
+    </ul>
+
+    <h2>What is sent to the USGS</h2>
+    <p>
+      Only gauge site numbers, a rounded area (described above), and state codes. Nothing
+      that identifies you or your device. The USGS is a U.S. government agency; see the
+      <a href="https://www.usgs.gov/policies/privacy-policy" rel="noopener">USGS Privacy Policy</a>.
+    </p>
+
+    <h2>What is stored on your device</h2>
+    <ul>
+      <li>The gauge you selected and its most recent reading</li>
+      <li>Your display preferences (which reading to show, temperature units)</li>
+      <li>A cache of nearby gauge lists and historical flow statistics</li>
+    </ul>
+    <p>
+      This lives in a private container shared between Flow Now and its widget. It never
+      leaves your device, and deleting the app deletes all of it.
+    </p>
+
+    <h2>Children</h2>
+    <p>Flow Now collects no personal information from anyone, including children.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the date above will change with it.</p>
+
+    <h2>Contact</h2>
+    <p>Questions: <a href="mailto:cspan00@pm.me"><strong>cspan00@pm.me</strong></a></p>
+  </main>
+
+  <footer class="footer wrap">
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <a href="mailto:cspan00@pm.me">Support</a>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <a href="mailto:cspan00@pm.me">cspan00@pm.me</a>
+    </nav>
+  </footer>
+</body>
+</html>
