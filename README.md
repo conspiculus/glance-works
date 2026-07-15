@@ -1,41 +1,40 @@
 # Glance Works
 
-Landing page for a portfolio of small, focused **widget apps**.
+Landing page for a one-person studio building small, single-purpose **iOS homescreen widgets** — each shows one number you check every day, pulled from a free public data source.
 
-Built with plain HTML, CSS, and JavaScript — no build step. Deployed to GitHub Pages via GitHub Actions.
+Built with plain HTML, one CSS file, and one vanilla JS file. No framework, no build step, no third-party requests except the live USGS gauge call. Deployed to GitHub Pages via GitHub Actions.
 
 ## Live site
 
-Once Pages finishes deploying: **https://conspiculus.github.io/glance-works/**
+**https://conspiculus.github.io/glance-works/**
 
-## Adding an app
+## The live hero
 
-Edit the `apps` array in [`script.js`](script.js) and add an entry:
+The hero is a real iOS-widget-styled tile showing the **current discharge (CFS)** for the Arkansas River near Nathrop, CO, fetched client-side from the USGS Water Services API:
 
-```js
-{
-  name: "My Widget",
-  icon: "🧩",
-  description: "What it does, in one line.",
-  tag: "Utility",
-  url: "https://link-to-the-app",   // leave "" to show "Coming soon"
-}
+```
+https://waterservices.usgs.gov/nwis/iv/?format=json&sites=07091200&parameterCd=00060
 ```
 
-The card is rendered automatically on the page.
+- `07091200` — Arkansas River near Nathrop (the Salida gauge `07091500` has no real-time discharge feed).
+- On load the number counts up to the live value, then the timestamp fades in.
+- If the fetch fails, it shows the last-known value with an honest, stale timestamp — never fake "live" data. Tune `FALLBACK_CFS` in [`script.js`](script.js).
+
+## Files
+
+- `index.html` — page markup (hero, promise, apps grid, about, footer)
+- `styles.css` — design system + light/dark themes
+- `script.js` — live USGS fetch + count-up
+- `.github/workflows/deploy.yml` — GitHub Pages deployment
 
 ## Local preview
 
-Just open `index.html` in a browser, or serve the folder:
+Open `index.html` directly, or serve the folder:
 
 ```bash
-python -m http.server 8000
-# then visit http://localhost:8000
+python -m http.server 8000   # then visit http://localhost:8000
 ```
 
-## Structure
+## Design
 
-- `index.html` — page markup
-- `styles.css` — styling
-- `script.js` — app data + card rendering
-- `.github/workflows/deploy.yml` — GitHub Pages deployment
+See [`CLAUDE.md`](CLAUDE.md) for the brand, voice, and visual system.

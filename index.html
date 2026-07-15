@@ -3,47 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Glance Works — Widget Apps</title>
-  <meta name="description" content="A portfolio of small, focused widget apps built to do one thing well." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Glance Works — one number, on your homescreen</title>
+  <meta name="description" content="Small single-purpose iOS homescreen widgets. Each shows one number you check every day, pulled straight from a public gauge. $0.99 once. No account, no ads, no subscription." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="hero">
-    <nav class="nav">
-      <a class="brand" href="#">Glance<span>Works</span></a>
-      <div class="nav-links">
-        <a href="#apps">Apps</a>
-        <a href="#about">About</a>
-        <a href="https://github.com/conspiculus" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </nav>
-    <div class="hero-inner">
-      <h1>Small apps that do one thing well.</h1>
-      <p class="lede">A growing collection of focused widget apps — fast, simple, and built to disappear into your day.</p>
-      <a class="cta" href="#apps">Explore the apps</a>
-    </div>
+  <header class="topbar wrap">
+    <a class="wordmark" href="/" aria-label="Glance Works — home">glance<span class="wordmark__dot">·</span>works</a>
+    <a class="appstore" href="#" aria-label="Get it on the App Store">
+      <svg class="appstore__logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M16.365 1.43c0 1.14-.42 2.2-1.12 2.98-.85.94-2.24 1.66-3.4 1.57-.14-1.1.44-2.28 1.1-3.02.79-.87 2.2-1.53 3.42-1.53zM20.9 17.4c-.55 1.27-.82 1.84-1.53 2.96-.99 1.56-2.39 3.5-4.12 3.51-1.54.02-1.94-1-4.03-.99-2.09.01-2.53 1.01-4.07.98-1.73-.03-3.05-1.78-4.04-3.34C1.34 16.65.99 11.06 3.31 8.09 4.72 6.26 6.86 5.16 8.9 5.16c2.07 0 3.37 1.13 5.08 1.13 1.66 0 2.67-1.13 5.06-1.13 1.81 0 3.73.99 5.1 2.7-4.48 2.45-3.75 8.84 1.76 9.54z" />
+      </svg>
+      <span class="appstore__text"><small>Download on the</small><strong>App Store</strong></span>
+    </a>
   </header>
 
   <main>
-    <section id="apps" class="apps">
-      <h2 class="section-title">The Portfolio</h2>
-      <p class="section-sub">Each widget is self-contained and purpose-built. More on the way.</p>
-      <div class="grid" id="app-grid">
-        <!-- Cards are rendered from apps in script.js -->
+    <section class="hero wrap" aria-labelledby="hero-thesis">
+      <div class="widget widget--hero" role="img"
+           aria-label="Live widget: Arkansas River near Nathrop, current flow in cubic feet per second">
+        <div class="widget__top">Arkansas River · Nathrop</div>
+        <div class="widget__read">
+          <span class="widget__num" id="cfs-hero" data-countup>—</span>
+          <span class="widget__unit">cfs</span>
+        </div>
+        <div class="widget__stamp" id="cfs-stamp" aria-live="polite"></div>
+      </div>
+      <p class="thesis" id="hero-thesis">
+        The Arkansas near Nathrop, right now. The one number you check before you
+        decide to paddle after work — big on your homescreen, with no login between
+        you and it.
+      </p>
+    </section>
+
+    <section class="promise wrap" aria-label="What these apps are">
+      <p>
+        No account. No ads. No subscription. No analytics. You pay
+        <strong>$0.99, once,</strong> and the number lives on your homescreen. The
+        reading comes straight from the public USGS gauge to your phone — nothing
+        stops off at a server of mine, because there isn't one.
+      </p>
+      <a class="appstore appstore--cta" href="#" aria-label="Get it on the App Store">
+        <svg class="appstore__logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M16.365 1.43c0 1.14-.42 2.2-1.12 2.98-.85.94-2.24 1.66-3.4 1.57-.14-1.1.44-2.28 1.1-3.02.79-.87 2.2-1.53 3.42-1.53zM20.9 17.4c-.55 1.27-.82 1.84-1.53 2.96-.99 1.56-2.39 3.5-4.12 3.51-1.54.02-1.94-1-4.03-.99-2.09.01-2.53 1.01-4.07.98-1.73-.03-3.05-1.78-4.04-3.34C1.34 16.65.99 11.06 3.31 8.09 4.72 6.26 6.86 5.16 8.9 5.16c2.07 0 3.37 1.13 5.08 1.13 1.66 0 2.67-1.13 5.06-1.13 1.81 0 3.73.99 5.1 2.7-4.48 2.45-3.75 8.84 1.76 9.54z" />
+        </svg>
+        <span class="appstore__text"><small>Download on the</small><strong>App Store</strong></span>
+      </a>
+    </section>
+
+    <section class="apps wrap" aria-labelledby="apps-heading">
+      <h2 class="quiet-heading" id="apps-heading">The apps</h2>
+      <div class="homescreen">
+        <a class="widget widget--tile is-live" href="#" style="--accent: var(--river)">
+          <div class="tile__top"><span class="tile__dot"></span>Arkansas · Nathrop</div>
+          <div class="tile__read">
+            <span class="tile__num" data-cfs>180</span><span class="tile__unit">cfs</span>
+          </div>
+          <div class="tile__foot">River flow</div>
+        </a>
+
+        <div class="widget widget--tile is-soon" style="--accent: var(--snow)">
+          <div class="tile__top"><span class="tile__dot"></span>SNOTEL</div>
+          <div class="tile__read"><span class="tile__num tile__num--muted">—</span><span class="tile__unit">in</span></div>
+          <div class="tile__foot">Snowpack <span class="soon">in the works</span></div>
+        </div>
+
+        <div class="widget widget--tile is-soon" style="--accent: var(--tide)">
+          <div class="tile__top"><span class="tile__dot"></span>NOAA</div>
+          <div class="tile__read"><span class="tile__num tile__num--muted">—</span><span class="tile__unit">ft</span></div>
+          <div class="tile__foot">Tides <span class="soon">in the works</span></div>
+        </div>
+
+        <div class="widget widget--tile is-soon" style="--accent: var(--aurora)">
+          <div class="tile__top"><span class="tile__dot"></span>Kp index</div>
+          <div class="tile__read"><span class="tile__num tile__num--muted">—</span><span class="tile__unit">kp</span></div>
+          <div class="tile__foot">Aurora <span class="soon">in the works</span></div>
+        </div>
+
+        <div class="widget widget--tile is-soon" style="--accent: var(--stone)">
+          <div class="tile__top"><span class="tile__dot"></span>NDBC</div>
+          <div class="tile__read"><span class="tile__num tile__num--muted">—</span><span class="tile__unit">ft</span></div>
+          <div class="tile__foot">Buoy <span class="soon">in the works</span></div>
+        </div>
+
+        <div class="widget widget--tile is-soon" style="--accent: var(--stone)">
+          <div class="tile__top"><span class="tile__dot"></span>Sun</div>
+          <div class="tile__read"><span class="tile__num tile__num--muted">—</span><span class="tile__unit">hr</span></div>
+          <div class="tile__foot">Golden hour <span class="soon">in the works</span></div>
+        </div>
       </div>
     </section>
 
-    <section id="about" class="about">
-      <div class="about-inner">
-        <h2 class="section-title">About</h2>
-        <p>Glance Works is a personal portfolio of lightweight widget apps. The goal is simple: build small tools that solve a single problem cleanly, with no clutter and no friction. This page is the front door to all of them.</p>
-      </div>
+    <section class="who wrap" aria-label="Who makes this">
+      <p>
+        I'm a one-person studio in Salida, Colorado. I build small widgets that each
+        show one number I got tired of opening an app to find.
+      </p>
     </section>
   </main>
 
-  <footer class="footer">
-    <p>&copy; <span id="year"></span> Glance Works. Built with plain HTML, CSS &amp; JS.</p>
+  <footer class="footer wrap">
+    <nav aria-label="Footer">
+      <a href="#">Privacy</a>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <a href="#">Support</a>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <a href="mailto:cspan00@pm.me">cspan00@pm.me</a>
+    </nav>
   </footer>
 
   <script src="script.js"></script>
