@@ -1,327 +1,270 @@
 /* ============================================================
    Glance Works — one number, on your homescreen.
-   Palette: cold water, river stone, instrument readout.
-   No webfonts. System stack everywhere; the number does the work.
+   Palette pulled from the app itself: forest ground, mint water,
+   white pulse, amber for a falling river. Topographic contours as
+   texture. The big number stays neutral; green is the sharp accent.
+   No webfonts — the product is native iOS, so the type is too.
    ============================================================ */
 
 :root {
-  --ink:      #14181D;   /* near-black, cold */
-  --paper:    #F7F9F9;   /* cool off-white */
-  --stone:    #5C6670;   /* secondary text, timestamps */
-  --river:    #2E6F8E;   /* river app accent: glacial blue-teal */
-  --hairline: #E2E7E9;
+  color-scheme: light dark;
 
-  /* reserved future-app accents */
-  --snow:   #7C8FA6;
-  --tide:   #3D6B5C;
-  --aurora: #4A5D8A;
+  --bg:       #E7EDE6;   /* pale, cool green-gray */
+  --bg-2:     #EEF2EC;
+  --ink:      #182019;   /* cold green-black text */
+  --stone:    #5C6A61;   /* secondary text, timestamps */
+  --hairline: #D3DCD1;
 
-  /* the widget tile is a dark iOS tile in both themes */
-  --tile-bg:   #14181D;
-  --tile-fg:   #F2F5F6;
-  --tile-sub:  #9AA6AF;
-  --tile-num:  #5FB2D6;  /* river, brightened for legibility on dark */
-  --tile-line: rgba(255,255,255,0.09);
-  --tile-glow: rgba(95,178,214,0.16);
+  --moss:     #2F9A5E;   /* functional green: live, rising, sparkline */
+  --mint:     #6FC191;   /* brand mint (the water drop) */
+  --amber:    #B67A1E;   /* a falling river */
 
-  --wrap: 680px;
+  /* reserved future-app accents (kept, re-tuned toward the green world) */
+  --snow:     #6E8BA0;
+  --tide:     #2F7A63;
+  --aurora:   #5566A0;
+
+  /* the widget card — light card on the light page */
+  --card:     #FCFEFB;
+  --card-num: #17201A;
+  --card-sub: #8A978D;
+  --card-line:#E6ECE4;
+  --contour:  rgba(29,74,48,0.07);
+  --pulse:    #FBFDFB;
+
+  --wrap: 660px;
   --sys: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --round: ui-rounded, "SF Pro Rounded", -apple-system, system-ui, var(--sys);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink:      #EAF0F2;
-    --paper:    #0E1216;
-    --stone:    #8A95A0;
-    --river:    #6FB6D8;
-    --hairline: #232B31;
+    --bg:       #0D1712;   /* forest green-black, from the app icon */
+    --bg-2:     #10201A;
+    --ink:      #E6EEE7;
+    --stone:    #8A988E;
+    --hairline: #1E2C25;
 
-    --tile-bg:   #1A2027;
-    --tile-fg:   #F2F5F6;
-    --tile-sub:  #8B97A0;
-    --tile-num:  #63B4DA;
-    --tile-line: rgba(255,255,255,0.10);
+    --moss:     #57C185;
+    --mint:     #8FD3A8;
+    --amber:    #D8A64E;
+
+    --snow:     #8CA4B8;
+    --tide:     #4FA184;
+    --aurora:   #7C8ECB;
+
+    --card:     #16231C;   /* dark widget card on the forest page */
+    --card-num: #F0F6F0;
+    --card-sub: #869389;
+    --card-line:#243529;
+    --contour:  rgba(143,211,168,0.08);
+    --pulse:    #EEF4EF;
   }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { -webkit-text-size-adjust: 100%; }
 
 body {
   font-family: var(--sys);
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
   font-size: 17px;
   line-height: 1.6;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* faint atmospheric wash so the page isn't a flat fill */
+  background-image:
+    radial-gradient(680px 460px at 50% -6%, color-mix(in srgb, var(--moss) 12%, transparent), transparent 70%),
+    radial-gradient(560px 420px at 100% 8%, color-mix(in srgb, var(--mint) 9%, transparent), transparent 72%);
+  background-attachment: fixed;
 }
 
-a { color: var(--river); text-decoration: none; }
+a { color: var(--moss); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-:focus-visible {
-  outline: 2px solid var(--river);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+:focus-visible { outline: 2px solid var(--moss); outline-offset: 3px; border-radius: 5px; }
 
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 24px; }
 
 /* ---------- Topbar ---------- */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-block: 22px;
-}
+.topbar { display: flex; align-items: center; justify-content: space-between; padding-block: 22px; }
 
 .wordmark {
-  color: var(--ink);
-  font-weight: 700;
-  font-size: 1.02rem;
-  letter-spacing: -0.02em;
+  display: inline-flex; align-items: center; gap: 9px;
+  color: var(--ink); font-weight: 700; font-size: 1.04rem; letter-spacing: -0.02em;
 }
 .wordmark:hover { text-decoration: none; }
-.wordmark__dot { color: var(--river); }
+.wordmark b { color: var(--stone); font-weight: 700; }
+.wordmark__mark { width: 22px; height: 22px; color: var(--mint); }
 
-/* ---------- App Store badge (inline, no third-party asset) ---------- */
+/* ---------- App Store badge (inline SVG, no third-party asset) ---------- */
 .appstore {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #000;
-  color: #fff;
-  border-radius: 11px;
-  padding: 7px 13px 7px 11px;
-  line-height: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--ink); color: var(--bg);
+  border-radius: 11px; padding: 7px 13px 7px 11px; line-height: 1;
 }
-.appstore:hover { text-decoration: none; background: #111; }
-.appstore__logo { width: 21px; height: 21px; fill: #fff; }
+.appstore:hover { text-decoration: none; opacity: 0.9; }
+.appstore__logo { width: 20px; height: 20px; fill: currentColor; }
 .appstore__text { display: flex; flex-direction: column; gap: 2px; }
-.appstore__text small { font-size: 9px; letter-spacing: 0.02em; opacity: 0.9; }
-.appstore__text strong { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.appstore__text small { font-size: 9px; letter-spacing: 0.02em; opacity: 0.85; }
+.appstore__text strong { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 
 /* ---------- Hero ---------- */
 .hero {
-  padding-block: clamp(48px, 9vw, 96px) 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
   position: relative;
+  padding-block: clamp(40px, 8vw, 84px) 20px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
 }
-/* faint glacial light behind the tile — atmosphere, not a card */
-.hero::before {
-  content: "";
+.topo {
   position: absolute;
-  inset: 0 0 auto;
-  height: 340px;
-  background: radial-gradient(420px 260px at 50% 34%, var(--tile-glow), transparent 70%);
-  z-index: 0;
-  pointer-events: none;
+  top: clamp(-56px, -3vw, -8px); left: 50%;
+  transform: translateX(-50%);
+  width: min(760px, 150vw); height: min(760px, 150vw);
+  color: var(--contour);
+  z-index: 0; pointer-events: none;
 }
 
+/* ---------- The widget card ---------- */
 .widget {
   position: relative;
-  background: var(--tile-bg);
-  color: var(--tile-fg);
-  border: 1px solid var(--tile-line);
-  border-radius: 22px;
-  overflow: hidden;
+  background: var(--card); color: var(--card-num);
+  border: 1px solid var(--card-line);
+  border-radius: 26px;
   box-shadow:
-    0 1px 2px rgba(20,24,29,0.05),
-    0 30px 50px -26px rgba(20,24,29,0.45);
-}
-/* subtle top-edge sheen, like light on water */
-.widget::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent 42%);
-  pointer-events: none;
+    0 1px 2px rgba(16,26,20,0.05),
+    0 34px 60px -30px rgba(13,30,20,0.42);
 }
 
 .widget--hero {
   z-index: 1;
-  width: clamp(224px, 74vw, 270px);
-  aspect-ratio: 1 / 1;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  width: clamp(288px, 88vw, 344px);
+  padding: 22px 24px 20px;
   text-align: left;
 }
 
-.widget__top {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--tile-sub);
+.w-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.w-name { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+.w-loc  { font-size: 13px; color: var(--card-sub); margin-top: 1px; }
+
+.w-live {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--moss);
+}
+.w-live__dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--moss);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--moss) 60%, transparent);
+  animation: pulse 2.4s ease-out infinite;
 }
 
-.widget__read { display: flex; align-items: baseline; gap: 8px; }
-
-.widget__num {
-  font-size: clamp(72px, 20vw, 104px);
-  font-weight: 800;
-  line-height: 0.86;
-  letter-spacing: -0.045em;
-  color: var(--tile-num);
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
+.w-read { display: flex; align-items: baseline; gap: 8px; margin-top: 14px; }
+.w-num {
+  font-family: var(--round);
+  font-size: clamp(72px, 21vw, 96px);
+  font-weight: 800; line-height: 0.84; letter-spacing: -0.04em;
+  color: var(--card-num);
+  font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
 }
+.w-unit { font-size: 15px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--card-sub); }
 
-.widget__unit {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--tile-sub);
+.w-foot {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--card-line);
 }
+.w-trend { font-size: 13.5px; font-weight: 600; color: var(--stone); font-variant-numeric: tabular-nums; }
+.w-trend.is-falling { color: var(--amber); }
+.w-trend.is-rising  { color: var(--moss); }
+.w-height { font-size: 12.5px; color: var(--card-sub); margin-top: 3px; font-variant-numeric: tabular-nums; }
 
-.widget__stamp {
-  font-size: 12px;
-  color: var(--tile-sub);
-  font-variant-numeric: tabular-nums;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  min-height: 1em;
+.w-spark { width: 96px; height: 34px; flex: none; overflow: visible; }
+.w-spark__area { fill: url(#sparkFill); opacity: 0; transition: opacity 0.6s ease; }
+.spark-stop-top { stop-color: var(--moss); stop-opacity: 0.28; }
+.spark-stop-bot { stop-color: var(--moss); stop-opacity: 0; }
+.w-spark__line {
+  fill: none; stroke: var(--moss); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 260; stroke-dashoffset: 260;
 }
-.widget__stamp.is-in { opacity: 1; }
+.w-spark__dot { fill: var(--moss); opacity: 0; }
+.w-spark.is-in .w-spark__area { opacity: 1; }
+.w-spark.is-in .w-spark__line { animation: draw 0.9s ease forwards; }
+.w-spark.is-in .w-spark__dot  { opacity: 1; transition: opacity 0.3s ease 0.7s; }
 
-.thesis {
-  max-width: 30rem;
-  margin-top: 30px;
-  color: var(--stone);
-  font-size: 1.06rem;
-  z-index: 1;
-}
+.thesis { max-width: 30rem; margin-top: 30px; color: var(--stone); font-size: 1.06rem; z-index: 1; }
 
 /* ---------- Promise ---------- */
-.promise { padding-block: clamp(40px, 7vw, 68px); }
-.promise p {
-  font-size: 1.18rem;
-  line-height: 1.62;
-  letter-spacing: -0.005em;
-}
+.promise { padding-block: clamp(38px, 7vw, 64px); }
+.promise p { font-size: 1.2rem; line-height: 1.6; letter-spacing: -0.006em; }
 .promise strong { color: var(--ink); font-weight: 600; white-space: nowrap; }
-
 .appstore--cta { margin-top: 26px; }
 
 /* ---------- Apps / homescreen ---------- */
-.apps { padding-block: clamp(24px, 5vw, 44px); }
-
+.apps { padding-block: clamp(22px, 5vw, 40px); }
 .quiet-heading {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--stone);
-  margin-bottom: 18px;
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 18px;
 }
-
-.homescreen {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
-}
+.homescreen { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 15px; }
 
 .widget--tile {
-  aspect-ratio: 1 / 1;
-  padding: 15px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: var(--tile-fg);
+  aspect-ratio: 1 / 1; padding: 15px 16px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  border-radius: 22px;
 }
 a.widget--tile:hover { text-decoration: none; }
 
-.tile__top {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--tile-sub);
-}
-.tile__dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--accent, var(--tile-sub));
-  flex: none;
-}
+.tile__top { display: flex; align-items: center; gap: 7px;
+  font-size: 10.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--card-sub); }
+.tile__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent, var(--card-sub)); flex: none; }
 
 .tile__read { display: flex; align-items: baseline; gap: 5px; }
 .tile__num {
-  font-size: clamp(32px, 8vw, 42px);
-  font-weight: 800;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  color: var(--tile-num);
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
+  font-family: var(--round);
+  font-size: clamp(30px, 8vw, 40px); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em;
+  color: var(--card-num); font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1;
 }
-.tile__num--muted { color: var(--tile-sub); font-weight: 700; }
-.tile__unit {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--tile-sub);
-}
+.tile__num--muted { color: var(--card-sub); font-weight: 700; }
+.tile__unit { font-size: 12px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; color: var(--card-sub); }
+.tile__foot { font-size: 13px; font-weight: 500; color: var(--card-num); }
 
-.tile__foot { font-size: 13px; font-weight: 500; color: var(--tile-fg); }
+.soon { display: block; font-size: 11px; font-weight: 500; color: var(--card-sub); margin-top: 1px; }
 
-.soon {
-  display: block;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--tile-sub);
-  margin-top: 1px;
-}
-
-/* upcoming tiles read as quiet, un-filled homescreen slots */
 .is-soon {
-  background: color-mix(in srgb, var(--tile-bg) 82%, transparent);
-  border-style: dashed;
-  box-shadow: none;
-  opacity: 0.72;
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+  border-style: dashed; box-shadow: none; opacity: 0.78;
 }
-.is-soon::before { display: none; }
-.is-soon .tile__dot { opacity: 0.55; }
+.is-soon .tile__dot { opacity: 0.5; }
 
 /* ---------- Who ---------- */
 .who {
-  padding-block: clamp(44px, 7vw, 72px);
-  border-top: 1px solid var(--hairline);
-  margin-top: clamp(40px, 7vw, 68px);
+  padding-block: clamp(42px, 7vw, 68px);
+  border-top: 1px solid var(--hairline); margin-top: clamp(38px, 7vw, 64px);
 }
 .who p { color: var(--stone); font-size: 1.06rem; max-width: 34rem; }
 
 /* ---------- Footer ---------- */
-.footer {
-  padding-block: 34px 48px;
-  border-top: 1px solid var(--hairline);
-}
-.footer nav {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  color: var(--stone);
-}
+.footer { padding-block: 32px 48px; border-top: 1px solid var(--hairline); }
+.footer nav { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--stone); }
 .footer a { color: var(--stone); }
 .footer a:hover { color: var(--ink); }
 .footer__sep { color: var(--hairline); }
 
-/* ---------- Motion preferences ---------- */
+/* ---------- Motion ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--moss) 55%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--moss) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--moss) 0%, transparent); }
+}
+
+.rise { opacity: 0; animation: rise 0.72s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; animation-delay: var(--delay, 0ms); }
+
 @media (prefers-reduced-motion: reduce) {
-  .widget__stamp { transition: none; }
-  * { scroll-behavior: auto; }
+  .rise { opacity: 1; animation: none; transform: none; }
+  .w-live__dot { animation: none; }
+  .w-spark__line { stroke-dashoffset: 0; animation: none; }
+  * { scroll-behavior: auto !important; }
 }

@@ -1,39 +1,40 @@
 /* ============================================================
    Glance Works — live hero widget.
-   Fetches the current discharge (CFS) for the Arkansas River near
-   Nathrop, CO straight from the public USGS Water Services API.
-   No other network calls. If the fetch fails we show the last known
-   value with an honest, stale timestamp — never fake "live" data.
+   Pulls the last day of discharge (CFS) and gauge height for the
+   Arkansas River near Nathrop, CO straight from the public USGS
+   Water Services API, then renders the current number, today's
+   trend, the gauge height, and a sparkline — a faithful copy of
+   the app's "Flow Now" widget. No other network calls.
+   If the fetch fails, we show the last known value with an honest,
+   stale timestamp — never fake "live" data.
    ============================================================ */
 
-// USGS site 07091200 = ARKANSAS RIVER NEAR NATHROP, CO.
-// (The Salida gauge, 07091500, has no real-time discharge feed.)
-// 00060 = discharge, cubic feet per second.
+// 07091200 = ARKANSAS RIVER NEAR NATHROP, CO.
+// (The Salida gauge 07091500 has no real-time discharge feed.)
+// 00060 = discharge (CFS), 00065 = gauge height (ft).
 const SITE = "07091200";
-const PARAM = "00060";
-const API = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${SITE}&parameterCd=${PARAM}`;
+const API = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${SITE}&parameterCd=00060,00065&period=P1D`;
 
-// Realistic last-known reading, used only if the live fetch fails.
-const FALLBACK_CFS = 180;
+const FALLBACK_CFS = 180; // realistic last-known reading, used only on failure
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const heroNum = document.getElementById("cfs-hero");
-const heroStamp = document.getElementById("cfs-stamp");
+const trendEl = document.getElementById("cfs-trend");
+const heightEl = document.getElementById("cfs-height");
+const spark = document.getElementById("cfs-spark");
+const sparkLine = document.getElementById("spark-line");
+const sparkArea = document.getElementById("spark-area");
+const sparkDot = document.getElementById("spark-dot");
 const tileNums = document.querySelectorAll("[data-cfs]");
 
 const fmt = (n) => Math.round(n).toLocaleString("en-US");
 
-function setTiles(value) {
-  tileNums.forEach((el) => (el.textContent = fmt(value)));
-}
+function setTiles(v) { tileNums.forEach((el) => (el.textContent = fmt(v))); }
 
-// Ease-out count-up. Lands exactly on `to`; tabular-nums prevents shift.
+// Ease-out count-up; tabular-nums keeps the layout from shifting.
 function countUp(el, from, to, duration) {
-  if (reduceMotion || from === to) {
-    el.textContent = fmt(to);
-    return Promise.resolve();
-  }
+  if (reduceMotion || from === to) { el.textContent = fmt(to); return Promise.resolve(); }
   return new Promise((resolve) => {
     const start = performance.now();
     const step = (now) => {
@@ -47,20 +48,39 @@ function countUp(el, from, to, duration) {
   });
 }
 
-function showStamp(text) {
-  heroStamp.textContent = text;
-  // next frame so the opacity transition actually runs
-  requestAnimationFrame(() => heroStamp.classList.add("is-in"));
+// Build the sparkline path from the day's discharge series.
+function drawSpark(series) {
+  const W = 96, H = 34, pad = 3;
+  const vals = series.map((p) => Number(p.value)).filter((n) => isFinite(n));
+  if (vals.length < 2) return;
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const span = max - min || 1;
+  const x = (i) => pad + (i / (vals.length - 1)) * (W - pad * 2);
+  const y = (v) => H - pad - ((v - min) / span) * (H - pad * 2);
+  const pts = vals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`);
+
+  sparkLine.setAttribute("points", pts.join(" "));
+  sparkArea.setAttribute("d", `M${pts[0]} L${pts.slice(1).join(" L")} L${x(vals.length - 1).toFixed(1)},${H} L${x(0).toFixed(1)},${H} Z`);
+  const [dx, dy] = pts[pts.length - 1].split(",");
+  sparkDot.setAttribute("cx", dx);
+  sparkDot.setAttribute("cy", dy);
+  requestAnimationFrame(() => spark.classList.add("is-in"));
 }
 
-function formatWhen(iso) {
-  const d = new Date(iso);
-  if (isNaN(d)) return "";
-  const time = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-  const now = new Date();
-  const sameDay = d.toDateString() === now.toDateString();
-  const day = sameDay ? "today" : d.toLocaleDateString([], { month: "short", day: "numeric" });
-  return `Updated ${time} · ${day}`;
+function renderTrend(series) {
+  const vals = series.map((p) => Number(p.value)).filter((n) => isFinite(n));
+  const change = Math.round(vals[vals.length - 1] - vals[0]);
+  const sign = change > 0 ? "+" : change < 0 ? "−" : "";
+  if (change > 1) {
+    trendEl.className = "w-trend is-rising";
+    trendEl.textContent = `▲ Rising · ${sign}${Math.abs(change)} today`;
+  } else if (change < -1) {
+    trendEl.className = "w-trend is-falling";
+    trendEl.textContent = `▼ Falling · ${sign}${Math.abs(change)} today`;
+  } else {
+    trendEl.className = "w-trend";
+    trendEl.textContent = "– Steady today";
+  }
 }
 
 async function fetchLive() {
@@ -70,29 +90,38 @@ async function fetchLive() {
     const res = await fetch(API, { signal: ctrl.signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    const series = data.value.timeSeries[0].values[0].value;
-    const latest = series[series.length - 1];
-    const value = Number(latest.value);
+    const byCode = {};
+    for (const ts of data.value.timeSeries) {
+      byCode[ts.variable.variableCode[0].value] = ts.values[0].value;
+    }
+    const flow = byCode["00060"];
+    if (!flow || !flow.length) throw new Error("no discharge");
+    const value = Number(flow[flow.length - 1].value);
     if (!isFinite(value) || value < 0) throw new Error("bad value");
-    return { value, when: latest.dateTime };
+    const height = byCode["00065"] ? Number(byCode["00065"].slice(-1)[0].value) : null;
+    return { value, flow, height };
   } finally {
     clearTimeout(timer);
   }
 }
 
 async function init() {
-  // Land the signature count-up on the fallback immediately so there is
-  // never a spinner or an empty hero, then correct to live once it arrives.
+  // Land the signature count-up on the fallback immediately so there is never
+  // a spinner or an empty hero, then correct to live once it arrives.
   setTiles(FALLBACK_CFS);
-  await countUp(heroNum, 0, FALLBACK_CFS, 600);
+  await countUp(heroNum, 0, FALLBACK_CFS, 620);
 
   try {
-    const { value, when } = await fetchLive();
+    const { value, flow, height } = await fetchLive();
     setTiles(value);
     await countUp(heroNum, FALLBACK_CFS, value, value === FALLBACK_CFS ? 0 : 420);
-    showStamp(formatWhen(when) || "Live from USGS");
+    renderTrend(flow);
+    heightEl.textContent = height != null ? `${height.toFixed(2)} ft` : "";
+    drawSpark(flow);
   } catch {
-    showStamp(`Couldn't reach USGS — last known ≈${FALLBACK_CFS} cfs`);
+    trendEl.className = "w-trend";
+    trendEl.textContent = "Couldn't reach USGS";
+    heightEl.textContent = `last known ≈${FALLBACK_CFS} cfs`;
   }
 }
 
