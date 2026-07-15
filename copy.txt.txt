@@ -1,0 +1,10 @@
+[synopsis]
+
+We got tired of going to websites, signing up for accounts, and thumbing through apps just to get one small piece 
+of info, so we changed it.
+No account, No Ads, No Subscription. Just the info you care about presented beautifully.
+
+[Flow Now]
+
+Our flagship app. Search thousands of USGS river gauges and see where your river is at, and where its going, 
+At a glance. No website to load, no apps to thumb through. Just download the app and add to your home screen. 

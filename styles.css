@@ -128,7 +128,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   container-type: inline-size;
   position: relative;
   z-index: 1;
-  width: clamp(292px, 82vw, 372px);
+  /* floor stays under 82vw at a 320px viewport (262px) so the card never
+     overflows the 272px content box on the narrowest supported screen */
+  width: clamp(240px, 82vw, 372px);
   aspect-ratio: 1 / 1;
   background: var(--card);
   /* % (not cqw): container units on the container itself resolve
@@ -182,10 +184,12 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---------- Promise ---------- */
 .promise { padding-block: clamp(38px, 7vw, 64px); }
 .promise p { font-size: 1.2rem; line-height: 1.6; letter-spacing: -0.006em; }
+.promise p + p { margin-top: 1.1rem; }
 /* scoped to the paragraph: an unscoped `.promise strong` also hit the
-   <strong>App Store</strong> inside the badge, painting it ink-on-ink */
-.promise p strong { color: var(--ink); font-weight: 600; white-space: nowrap; }
-.appstore--cta { margin-top: 26px; }
+   <strong>App Store</strong> inside the badge, painting it ink-on-ink.
+   No nowrap — this phrase is long enough to overflow a narrow screen. */
+.promise p strong { color: var(--ink); font-weight: 600; }
+.appstore--cta { margin-top: 28px; z-index: 1; }
 
 /* ---------- Apps / homescreen ---------- */
 .apps { padding-block: clamp(22px, 5vw, 40px); }
