@@ -1,0 +1,182 @@
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface-2: #1c2330;
+  --border: #2a3140;
+  --text: #e6edf3;
+  --muted: #9aa7b4;
+  --accent: #6ea8fe;
+  --accent-2: #b692ff;
+  --radius: 14px;
+  --maxw: 1080px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Hero ---------- */
+.hero {
+  background:
+    radial-gradient(1200px 500px at 80% -10%, rgba(110, 168, 254, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 0% 0%, rgba(182, 146, 255, 0.14), transparent 55%),
+    var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+.brand span { color: var(--accent); }
+
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { color: var(--muted); font-size: 0.95rem; transition: color 0.15s; }
+.nav-links a:hover { color: var(--text); }
+
+.hero-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 80px 24px 96px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  background: linear-gradient(90deg, var(--text), var(--accent) 60%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lede {
+  max-width: 620px;
+  margin: 20px auto 0;
+  color: var(--muted);
+  font-size: 1.15rem;
+}
+
+.cta {
+  display: inline-block;
+  margin-top: 34px;
+  padding: 13px 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #0d1117;
+  font-weight: 600;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 8px 30px rgba(110, 168, 254, 0.25);
+}
+.cta:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(110, 168, 254, 0.35); }
+
+/* ---------- Sections ---------- */
+.section-title {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+.section-sub {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.apps { max-width: var(--maxw); margin: 0 auto; padding: 84px 24px; }
+
+.grid {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.18s, border-color 0.18s, background 0.18s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+
+.card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, rgba(110,168,254,0.2), rgba(182,146,255,0.2));
+  border: 1px solid var(--border);
+}
+
+.card h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
+.card p { color: var(--muted); font-size: 0.95rem; flex: 1; }
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+.tag {
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: rgba(110, 168, 254, 0.1);
+  border: 1px solid rgba(110, 168, 254, 0.25);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.card-link { color: var(--accent); font-size: 0.9rem; font-weight: 600; }
+.card-link[aria-disabled="true"] { color: var(--muted); cursor: default; }
+
+/* ---------- About ---------- */
+.about {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.about-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  text-align: center;
+}
+.about-inner p { color: var(--muted); margin-top: 18px; font-size: 1.05rem; }
+
+/* ---------- Footer ---------- */
+.footer {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 30px 24px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
