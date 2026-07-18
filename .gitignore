@@ -7,3 +7,9 @@ Thumbs.db
 node_modules/
 dist/
 .env
+
+# Local deploy notes
+DEPLOY.md
+
+# Output of the workflow's assemble step, when reproduced locally
+_pages/
