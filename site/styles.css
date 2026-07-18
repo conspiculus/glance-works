@@ -196,6 +196,25 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   margin-top: clamp(30px, 5vw, 52px); }
 .more p { color: var(--stone); font-size: 1.06rem; }
 
+/* ---------- Holding page ----------
+   Same furniture as the hero (topo rings, centred column), minus the
+   widget — the product reveal waits for launch. */
+/* short page, so pin the footer to the bottom instead of letting it
+   float mid-viewport on tall screens */
+.page-soon { min-height: 100dvh; display: flex; flex-direction: column; }
+/* .wrap's `margin-inline: auto` would otherwise defeat stretch and
+   shrink each row to its content width */
+.page-soon > * { width: 100%; }
+.page-soon main { flex: 1; display: flex; align-items: center; }
+.soon { width: 100%; padding-block: clamp(40px, 8vw, 72px); }
+.soon__tag { z-index: 1; color: var(--stone); font-size: 13px; font-weight: 600;
+  letter-spacing: 0.09em; text-transform: uppercase; }
+.soon__head { z-index: 1; margin-top: 18px; max-width: 18ch;
+  font-size: clamp(1.75rem, 6.2vw, 2.5rem); font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1.15; }
+.soon__body { z-index: 1; margin-top: 22px; max-width: 32rem;
+  color: var(--stone); font-size: 1.06rem; }
+
 /* ---------- Prose (privacy policy) ---------- */
 .prose { padding-block: clamp(28px, 5vw, 48px) clamp(36px, 6vw, 60px); }
 .prose h1 { font-size: clamp(1.7rem, 5vw, 2.1rem); font-weight: 700; letter-spacing: -0.028em; }

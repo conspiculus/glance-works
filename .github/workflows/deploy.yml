@@ -5,6 +5,16 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# ============================================================
+#  THE SWITCH
+#  soon = holding page only (plus the privacy policy, which
+#         Apple checks during App Review)
+#  live = the full site
+#  Launch day: change this one word to `live` and push.
+# ============================================================
+env:
+  MODE: soon
+
 permissions:
   contents: read
   pages: write
@@ -25,13 +35,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Assemble the published site
+        run: |
+          set -euo pipefail
+          mkdir _pages
+          if [ "$MODE" = "live" ]; then
+            cp -R site/. _pages/
+          elif [ "$MODE" = "soon" ]; then
+            cp holding/index.html _pages/
+            # shared, single-source: no duplicate copies to drift
+            cp site/privacy.html site/styles.css site/mail.js site/favicon.svg _pages/
+          else
+            echo "MODE must be 'soon' or 'live', got '$MODE'" >&2
+            exit 1
+          fi
+          echo "Publishing in $MODE mode:"
+          ls -l _pages
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ./_pages
 
       - name: Deploy to GitHub Pages
         id: deployment

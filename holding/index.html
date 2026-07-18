@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <title>Glance Works — coming soon</title>
+        <meta
+            name="description"
+            content="Small iOS homescreen widgets that show one number you check every day. Not out yet."
+        />
+        <meta name="robots" content="noindex" />
+        <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body class="page-soon">
+        <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+            <symbol id="drop" viewBox="0 0 24 24">
+                <path
+                    d="M12 4.2C12 4.2 17.6 10.6 17.6 14.6A5.6 5.6 0 1 1 6.4 14.6C6.4 10.6 12 4.2 12 4.2Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                />
+                <polyline
+                    points="8.1,15 10.2,15 11.3,12.7 12.7,17.4 13.8,15 16,15"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </symbol>
+        </svg>
+
+        <header class="topbar wrap">
+            <a
+                class="wordmark"
+                href="index.html"
+                aria-label="Glance Works — home"
+            >
+                <svg class="wordmark__mark" aria-hidden="true">
+                    <use href="#drop" />
+                </svg>
+                <span>glance<b>works</b></span>
+            </a>
+        </header>
+
+        <main>
+            <section class="hero soon wrap">
+                <svg
+                    class="topo-bg"
+                    viewBox="-320 -320 640 640"
+                    aria-hidden="true"
+                    preserveAspectRatio="xMidYMid meet"
+                >
+                    <g fill="none" stroke="currentColor" stroke-width="1.4">
+                        <path
+                            id="ring"
+                            d="M0,-232 C132,-222 236,-140 226,14 C220,150 132,238 -14,232 C-150,226 -236,132 -226,-18 C-220,-150 -132,-242 0,-232 Z"
+                        />
+                        <use href="#ring" transform="scale(0.84) rotate(9)" />
+                        <use href="#ring" transform="scale(0.68) rotate(-7)" />
+                        <use href="#ring" transform="scale(0.53) rotate(14)" />
+                        <use href="#ring" transform="scale(0.39) rotate(-4)" />
+                        <use href="#ring" transform="scale(0.26) rotate(11)" />
+                        <use href="#ring" transform="scale(0.14) rotate(-9)" />
+                    </g>
+                </svg>
+
+                <p class="soon__tag rise" style="--delay: 40ms">Coming soon</p>
+
+                <h1 class="soon__head rise" style="--delay: 120ms">
+                    Small iOS widgets that show one number.
+                </h1>
+
+                <p class="soon__body rise" style="--delay: 220ms">
+                    The first one is Flow Now: the river gauge you care about,
+                    on your homescreen, no website to load. It isn't on the App
+                    Store yet. When it is, it will be here.
+                </p>
+            </section>
+        </main>
+
+        <footer class="footer wrap">
+            <nav aria-label="Footer">
+                <a href="privacy.html">Privacy</a>
+                <span class="footer__sep" aria-hidden="true">·</span>
+                <a data-mail>info at glance-works dot com</a>
+            </nav>
+        </footer>
+
+        <script src="mail.js"></script>
+    </body>
+</html>
